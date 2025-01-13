@@ -60,3 +60,29 @@ if __name__ == '__main__':
     plt.show()
     plt.plot(M_t-Half_normal)
     plt.show()
+    
+    #Self Similarity by scaling
+    #If we multiply a brownian motion by a scalar, c, then we get a brownian motion at time t/c^2
+    #V_t = (1/c)W_{tc^2} is a brownian motion
+    #W^(1)_{tc^2} = cW^(2)_t , equal in distribution
+    mu = 0
+    sigma = 1
+    t = 1
+
+    m = 1000 #number of iterations
+    n = 1000 #number of segments of the brownian motion
+
+    C = [0.5,2,10]
+    for c in C:
+        #compare the BM to the scaled brownian motion at the middle of the time
+        diff = np.zeros(m)
+        for i in np.arange(m):
+            brownian_scale = c*BM(n,t,mu,sigma)
+            brownian = BM(n,t*(c*c),mu,sigma)
+            diff[i] = brownian_scale[n//2] - brownian[n//2]
+        diff = np.sort(diff)
+        plt.plot(diff)
+        norm = np.random.normal(mu,sigma*np.sqrt(t)*c,m)
+        norm = np.sort(norm)
+        plt.plot(norm)
+        plt.show()
