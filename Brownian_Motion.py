@@ -86,3 +86,30 @@ if __name__ == '__main__':
         norm = np.sort(norm)
         plt.plot(norm)
         plt.show()
+    
+    
+    
+    #time reversal
+    #starting the browning motion at time 1 and going in reverse time results in a brownian up until time 1
+    #i.e W_{1-t} - W_1 = V_t for 0<= t<= 1, V_t is a brownian motion
+    mu = 0
+    sigma = 1
+    t = 1
+
+    m = 1000 #number of iterations
+    n = 1000 #number of segments of the brownian motion
+    diff = np.zeros(m)
+    for i in np.arange(m):
+        brownian_rev = np.zeros(n)
+        brownian = BM(n,t,mu,sigma)
+        brownian_comp = BM(n,t,mu,sigma) #comparison BM
+        brownian_1 = brownian[n-1]
+        for j in np.arange(n):
+            brownian_rev[j] = brownian_1 - brownian[n-1-j]
+        diff[i] = brownian_comp[n//3] - brownian_rev[n//3]
+    diff = np.sort(diff)
+    norm = np.random.normal(mu,sigma*np.sqrt(2/3),m)
+    norm = np.sort(norm)
+    plt.plot(diff)
+    plt.plot(norm)
+    plt.show()
