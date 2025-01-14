@@ -58,8 +58,6 @@ if __name__ == '__main__':
     plt.plot(M_t)
     plt.plot(Half_normal)
     plt.show()
-    plt.plot(M_t-Half_normal)
-    plt.show()
     
     #Self Similarity by scaling
     #If we multiply a brownian motion by a scalar, c, then we get a brownian motion at time t/c^2
