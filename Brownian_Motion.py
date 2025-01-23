@@ -111,3 +111,76 @@ if __name__ == '__main__':
     plt.plot(diff)
     plt.plot(norm)
     plt.show()
+    
+    #Time Inversion
+    #V_t = tW_{1/t} is a brownian motion
+    #Time inverstion is very useful in determining long time behaviour
+    mu = 0
+    sigma = 1
+    T = 1
+
+    m = 1000 #number of iterations
+    n = 1000 #number of segments of the brownian motion
+    diff = np.zeros(m)
+    for i in np.arange(m):
+        brownian_inv = np.zeros(n)
+        brownian = BM(n,n,mu,sigma) #T=n so we are able to create the time inverseion BM
+        brownian_comp = BM(n,T,mu,sigma) #comparison BM
+        for j in np.arange(1,n):
+            dt = t/n
+            brownian_inv[j] =   j*dt*brownian[n-1-j]#(1/(j*dt)*n)
+            brownian_inv[j] = j*dt*brownian[int(1/(j*dt))]
+        diff[i] = brownian_comp[n//3] - brownian_inv[n//3]
+    diff = np.sort(diff)
+    norm = np.random.normal(mu,sigma*np.sqrt(2/3),m)
+    norm = np.sort(norm)
+    plt.plot(diff)
+    plt.plot(norm)
+    plt.show()
+    
+    #brownian motion has quadratic variation of t at time t
+
+    n = 10000
+    mu = 0
+    sigma = 1
+    T = 1
+    quad_var = np.zeros(n)
+    for i in np.arange(1,n+1):
+        brownian = BM(i,T,mu,sigma)
+        quad_sum = 0
+        for j in np.arange(i):
+            diff = brownian[j+1]-brownian[j]
+            quad_sum = quad_sum + diff*diff
+        quad_var[i-1] = quad_sum
+    plt.plot(quad_var)
+    plt.show()
+    plt.plot(np.log(quad_var))
+    plt.show()
+    
+    #brownian motion has quadratic variation of t at time t
+
+    n = 1000
+    mu = 0
+    sigma = 1
+    T = 1
+    quad_var = np.zeros(n)
+    for i in np.arange(1,n+1):
+        brownian = BM(i,T,mu,sigma)
+        quad_sum = 0
+        for j in np.arange(i):
+            diff = brownian[j+1]-brownian[j]
+            quad_sum = quad_sum + diff*diff
+        quad_var[i-1] = quad_sum
+    plt.plot(quad_var)
+    plt.show()
+
+    quad_var = np.zeros(n)
+    for i in np.arange(1,n+1):
+        brownian = BM(i,i,mu,sigma)
+        quad_sum = 0
+        for j in np.arange(i):
+            diff = brownian[j+1]-brownian[j]
+            quad_sum = quad_sum + diff*diff
+        quad_var[i-1] = quad_sum
+    plt.plot(quad_var)
+    plt.show()
